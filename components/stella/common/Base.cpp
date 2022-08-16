@@ -63,12 +63,18 @@ string Base::toString(int value, Common::Base::Format outputBase)
     }
 
     case Base::F_10:    // base 10: 3 or 5 bytes (depending on value)
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation" /* Or "-Wformat-truncation" */
+#endif
       if(value < 0x100)
         BSPF_snprintf(vToS_buf, 4, "%3d", value);
       else
         BSPF_snprintf(vToS_buf, 6, "%5d", value);
       break;
-
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     case Base::F_16_1:  // base 16: 1 byte wide
       BSPF_snprintf(vToS_buf, 2, myFmt[0], value);
       break;
